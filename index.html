@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wallet 2.0 — From Instrument Storage to a True Digital Wallet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:        #faf8f5;
+      --cream-dark:   #f0ece6;
+      --w50:          #fdfcfa;
+      --w100:         #f7f4ef;
+      --w200:         #ebe6dc;
+      --w300:         #d9d0c1;
+      --w400:         #b8aa96;
+      --w500:         #9a8b78;
+      --w600:         #7a6c5b;
+      --w700:         #5c5044;
+      --w800:         #3d352d;
+      --w900:         #2a231d;
+      --green:        #2d8a5e;
+      --green-light:  #e8f5ee;
+      --green-mid:    #b8deca;
+      --amber:        #b8860b;
+      --amber-light:  #fdf6e3;
+      --blue:         #4a6fa5;
+      --blue-light:   #edf2f9;
+      --rose:         #c2556e;
+      --rose-light:   #fdf0f3;
+      --teal:         #2a7f7f;
+      --teal-light:   #e6f4f4;
+      --serif:        'Instrument Serif', Georgia, serif;
+      --sans:         'DM Sans', -apple-system, sans-serif;
+      --r:            12px;
+      --max:          860px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--cream);
+      color: var(--w700);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--green); }
+
+    /* ─── NAV ─── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(250,248,245,.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--w200);
+    }
+    .nav-inner {
+      max-width: var(--max); margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 54px; padding: 0 1.5rem;
+    }
+    .nav-brand {
+      font-family: var(--serif); font-size: 1.15rem; color: var(--w900);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nav-brand-badge {
+      font-family: var(--sans); font-size: .62rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .05em;
+      background: var(--green-light); color: var(--green);
+      padding: 2px 7px; border-radius: 20px;
+    }
+    .nav-links { display: flex; gap: 2px; list-style: none; }
+    .nav-links a {
+      color: var(--w500); font-size: .8rem; font-weight: 500;
+      padding: 5px 11px; border-radius: 8px;
+      text-decoration: none; transition: all .15s;
+    }
+    .nav-links a:hover { color: var(--w900); background: var(--w100); }
+
+    /* ─── HERO ─── */
+    .hero {
+      max-width: var(--max); margin: 0 auto;
+      padding: 5rem 1.5rem 1rem;
+    }
+    .hero-eyebrow {
+      font-size: .72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em;
+      color: var(--green); margin-bottom: .7rem;
+    }
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: 3.6rem; font-weight: 400;
+      color: var(--w900); letter-spacing: -.03em;
+      line-height: 1.08; margin-bottom: 1rem;
+    }
+    .hero h1 em { font-style: italic; color: var(--green); }
+    .hero-lead {
+      font-size: 1.05rem; color: var(--w600);
+      max-width: 600px; line-height: 1.7;
+      margin-bottom: 1.6rem;
+    }
+    .hero-lead strong { color: var(--w900); font-weight: 600; }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--w900); color: #fff;
+      font-size: .82rem; font-weight: 600;
+      padding: 10px 20px; border-radius: 8px;
+      text-decoration: none; transition: all .2s;
+    }
+    .hero-cta:hover { background: var(--w800); color: #fff; transform: translateY(-1px); }
+    .hero-cta-ghost {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: transparent; color: var(--w700);
+      font-size: .82rem; font-weight: 600;
+      padding: 10px 20px; border-radius: 8px;
+      border: 1.5px solid var(--w300);
+      text-decoration: none; transition: all .2s;
+    }
+    .hero-cta-ghost:hover { border-color: var(--w500); color: var(--w900); background: var(--w100); }
+    .cta-row { display: flex; align-items: center; gap: .8rem; flex-wrap: wrap; }
+    .hero-divider { height: 1px; background: var(--w200); margin-top: 3.5rem; }
+
+    /* ─── SECTION WRAPPER ─── */
+    .section { max-width: var(--max); margin: 0 auto; padding: 3.5rem 1.5rem 0; }
+    .section-label {
+      font-size: .68rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .1em;
+      color: var(--w400); margin-bottom: .4rem;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: 2rem; font-weight: 400;
+      color: var(--w900); letter-spacing: -.02em;
+      line-height: 1.2; margin-bottom: .6rem;
+    }
+    .section-title em { font-style: italic; color: var(--green); }
+    .section-body {
+      font-size: .92rem; color: var(--w600);
+      max-width: 620px; line-height: 1.75; margin-bottom: 2rem;
+    }
+    .section-body strong { color: var(--w800); }
+
+    /* ─── STAT STRIP ─── */
+    .stat-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem; margin-bottom: 1.5rem;
+    }
+    .stat-card {
+      background: white; border: 1px solid var(--w200);
+      border-radius: var(--r); padding: 1.4rem 1.2rem;
+      position: relative; overflow: hidden;
+    }
+    .stat-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+    }
+    .stat-card.c-green::before { background: var(--green); }
+    .stat-card.c-amber::before { background: var(--amber); }
+    .stat-card.c-rose::before { background: var(--rose); }
+    .stat-value {
+      font-family: var(--serif); font-size: 2.6rem;
+      color: var(--w900); line-height: 1; margin-bottom: .2rem;
+    }
+    .stat-label { font-size: .8rem; color: var(--w500); line-height: 1.4; }
+    .stat-sub { font-size: .72rem; color: var(--w400); margin-top: .25rem; }
+
+    /* ─── PROBLEM CARDS ─── */
+    .problems { display: flex; flex-direction: column; gap: .9rem; }
+
+    .prob-card {
+      background: var(--w50); border: 1px solid var(--w200);
+      border-radius: var(--r); overflow: hidden;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .prob-card:hover { border-color: var(--w300); box-shadow: 0 2px 12px rgba(42,35,29,.04); }
+
+    .prob-header {
+      padding: 1.2rem 1.4rem; cursor: pointer;
+      display: flex; align-items: center; gap: 1rem;
+      user-select: none;
+    }
+    .prob-icon {
+      width: 38px; height: 38px; flex-shrink: 0;
+      border-radius: 9px; display: flex; align-items: center;
+      justify-content: center; font-size: 1.1rem;
+    }
+    .pi-green { background: var(--green-light); }
+    .pi-amber { background: var(--amber-light); }
+    .pi-blue  { background: var(--blue-light); }
+    .pi-rose  { background: var(--rose-light); }
+
+    .prob-title {
+      flex: 1; font-weight: 600; font-size: .95rem;
+      color: var(--w900); letter-spacing: -.01em;
+    }
+    .prob-subtitle { font-size: .8rem; color: var(--w500); margin-top: 1px; }
+    .prob-chevron {
+      width: 22px; height: 22px; flex-shrink: 0;
+      color: var(--w400); transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+    }
+    .prob-card.open .prob-chevron { transform: rotate(180deg); color: var(--green); }
+
+    .prob-body { max-height: 0; overflow: hidden; opacity: 0; transition: max-height .4s ease, opacity .3s; }
+    .prob-card.open .prob-body { opacity: 1; }
+    .prob-body-inner {
+      padding: 0 1.4rem 1.4rem 1.4rem;
+      border-top: 1px solid var(--w200);
+      margin: 0 0 0 0;
+    }
+    .prob-body-inner p {
+      font-size: .88rem; color: var(--w600); line-height: 1.75; padding-top: 1rem;
+    }
+    .prob-body-inner strong { color: var(--w800); }
+
+    /* ─── CAPABILITY PILLARS ─── */
+    .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: .5rem; }
+    .pillar {
+      background: white; border: 1px solid var(--w200);
+      border-radius: var(--r); padding: 1.5rem 1.3rem;
+      transition: all .2s;
+    }
+    .pillar:hover { border-color: var(--w300); transform: translateY(-2px); box-shadow: 0 4px 20px rgba(42,35,29,.06); }
+    .pillar-icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; margin-bottom: .9rem;
+    }
+    .pillar-title {
+      font-weight: 700; font-size: .92rem; color: var(--w900);
+      margin-bottom: .35rem; letter-spacing: -.01em;
+    }
+    .pillar-desc { font-size: .82rem; color: var(--w500); line-height: 1.6; }
+
+    /* ─── WHERE WE START ─── */
+    .partners { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .partner {
+      background: white; border: 1px solid var(--w200);
+      border-radius: var(--r); padding: 1.4rem 1.3rem;
+      transition: all .2s;
+    }
+    .partner:hover { border-color: var(--green-mid); box-shadow: 0 3px 16px rgba(45,138,94,.07); }
+    .partner-chip {
+      font-size: .65rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .06em; padding: 2px 8px; border-radius: 6px;
+      background: var(--green-light); color: var(--green);
+      display: inline-block; margin-bottom: .7rem;
+    }
+    .partner-name {
+      font-weight: 700; font-size: .95rem; color: var(--w900);
+      margin-bottom: .4rem; letter-spacing: -.01em;
+    }
+    .partner-unlock { font-size: .82rem; color: var(--w500); line-height: 1.6; }
+    .partner-unlock strong { color: var(--w700); }
+
+    /* ─── BEFORE / AFTER ─── */
+    .ba-table {
+      width: 100%; border-collapse: separate; border-spacing: 0;
+      border-radius: var(--r); overflow: hidden;
+      border: 1px solid var(--w200);
+    }
+    .ba-table thead tr th {
+      padding: 1rem 1.2rem; font-size: .8rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .05em;
+      text-align: left; border-bottom: 1px solid var(--w200);
+    }
+    .ba-table thead th:first-child { background: var(--w100); color: var(--w500); width: 28%; }
+    .ba-table thead th.th-before { background: #fff8f0; color: var(--amber); width: 36%; }
+    .ba-table thead th.th-after  { background: var(--green-light); color: var(--green); width: 36%; }
+
+    .ba-table tbody tr td {
+      padding: .9rem 1.2rem; font-size: .86rem; vertical-align: top;
+      border-bottom: 1px solid var(--w200);
+    }
+    .ba-table tbody tr:last-child td { border-bottom: none; }
+    .ba-table tbody td:first-child { background: var(--w100); color: var(--w600); font-weight: 600; font-size: .8rem; }
+    .ba-table tbody td.td-before { background: #fffcf7; color: var(--w600); }
+    .ba-table tbody td.td-after  { background: #f8fdf9; color: var(--w700); }
+    .ba-table tbody td.td-before .old { color: var(--amber); font-weight: 600; }
+    .ba-table tbody td.td-after .new  { color: var(--green); font-weight: 600; }
+
+    /* ─── FAQ ─── */
+    .faq { display: flex; flex-direction: column; gap: .6rem; }
+    .faq-item {
+      background: var(--w50); border: 1px solid var(--w200);
+      border-radius: var(--r); overflow: hidden;
+    }
+    .faq-q {
+      padding: 1rem 1.3rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between;
+      font-weight: 600; font-size: .9rem; color: var(--w900);
+      user-select: none; gap: .8rem;
+    }
+    .faq-q:hover { background: var(--w100); }
+    .faq-chevron {
+      width: 18px; height: 18px; flex-shrink: 0;
+      color: var(--w400); transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+    }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--green); }
+    .faq-a { max-height: 0; overflow: hidden; opacity: 0; transition: max-height .4s ease, opacity .3s; }
+    .faq-item.open .faq-a { opacity: 1; }
+    .faq-a-inner {
+      padding: 0 1.3rem 1.1rem;
+      border-top: 1px solid var(--w200);
+    }
+    .faq-a-inner p { font-size: .88rem; color: var(--w600); line-height: 1.75; padding-top: .9rem; }
+    .faq-a-inner strong { color: var(--w800); }
+
+    /* ─── CONTACTS ─── */
+    .contacts { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: .8rem; }
+    .contact {
+      background: white; border: 1px solid var(--w200);
+      border-radius: 10px; padding: 1rem 1.2rem;
+      display: flex; align-items: center; gap: 12px;
+      transition: border-color .2s;
+    }
+    .contact:hover { border-color: var(--w300); }
+    .c-av {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: .78rem;
+    }
+    .c-av.g { background: var(--green-light); color: var(--green); }
+    .c-av.a { background: var(--amber-light); color: var(--amber); }
+    .c-av.b { background: var(--blue-light);  color: var(--blue); }
+    .c-av.t { background: var(--teal-light);  color: var(--teal); }
+    .c-name { font-weight: 600; font-size: .88rem; color: var(--w900); }
+    .c-role { font-size: .74rem; color: var(--w400); }
+    .c-link { font-size: .74rem; color: var(--green); font-weight: 500; text-decoration: none; }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      text-align: center; padding: 2.5rem 1.5rem;
+      font-size: .74rem; color: var(--w400);
+      border-top: 1px solid var(--w200); margin-top: 4rem;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+    .fade { opacity:0; animation: fadeUp .55s cubic-bezier(.4,0,.2,1) forwards; }
+    .d1 { animation-delay:.05s; } .d2 { animation-delay:.12s; }
+    .d3 { animation-delay:.2s;  } .d4 { animation-delay:.28s; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 700px) {
+      .hero h1 { font-size: 2.5rem; }
+      .stat-strip { grid-template-columns: 1fr; }
+      .pillars { grid-template-columns: 1fr; }
+      .partners { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .ba-table { font-size: .78rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════ NAV ════ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      Wallet 2.0
+      <span class="nav-brand-badge">In Progress</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#why">Why</a></li>
+      <li><a href="#what">What</a></li>
+      <li><a href="#where">Where</a></li>
+      <li><a href="#how">Before & After</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#resources">Resources</a></li>
+      <li><a href="#contacts">Contacts</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ════ HERO ════ -->
+<header class="hero fade d1">
+  <div class="hero-eyebrow">Wallet Platform · Strategic Initiative</div>
+  <h1>From instrument storage<br/>to a <em>true digital wallet.</em></h1>
+  <p class="hero-lead">
+    Wallet 1.0 stores cards, bank accounts, and PayPal. That's it — no access control, no permissions, no extensibility. 
+    <strong>Wallet 2.0 reimagines the wallet as an identity container:</strong> holding instruments and permissions together so that who can use what, for what purpose, and for how long is governed by design — not assumed.
+  </p>
+  <div class="cta-row">
+    <a href="#why" class="hero-cta">Understand the case ↓</a>
+    <a href="https://docs.google.com/document/d/1KNSYt8Z0Xel4RqS5NYrePo8r06cKPxA5IZ1Gm5h2tHY/edit?tab=t.0#heading=h.t4pqt8uzwu97" target="_blank" class="hero-cta-ghost">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Technical Design Doc
+    </a>
+  </div>
+  <div class="hero-divider"></div>
+</header>
+
+<!-- ════ WHY — PROBLEMS ════ -->
+<section class="section fade d2" id="why">
+  <div class="section-label">Why — The Problems</div>
+  <h2 class="section-title">Four shortcomings<br/>driving <em>Wallet 2.0</em></h2>
+  <p class="section-body">Click each to expand.</p>
+
+  <div class="problems">
+
+    <div class="prob-card" onclick="toggleProb(this)">
+      <div class="prob-header">
+        <div class="prob-icon pi-rose">🪪</div>
+        <div>
+          <div class="prob-title">Trust & Identity Fragmentation</div>
+          <div class="prob-subtitle">61% of wallets are unlinked — we can't consistently recognize or protect the same customer</div>
+        </div>
+        <svg class="prob-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="prob-body">
+        <div class="prob-body-inner">
+          <p>Only <strong>39% of wallets (93M)</strong> are linked to a verified Intuit profile. The remaining <strong>61% (141M)</strong> are unlinked identities created by businesses on behalf of their customers. This fragmentation limits our ability to consistently personalize experiences, apply protections, and resolve support issues — driving higher fraud exposure and "ownership" ambiguity (e.g., who actually controls this wallet or instrument?).</p>
+          <p style="margin-top:.7rem;">For <strong>SMBs</strong>, the result is an inconsistent ability to recognize and serve the same customer across touchpoints, which creates operational friction and reduces conversion to saved-payment experiences. For <strong>end consumers</strong>, it shows up as confusing and repetitive payment journeys — saved methods don't reliably carry across invoices, checkout links, and pay-now flows, forcing re-entry and creating uncertainty about which identity they're transacting under.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="prob-card" onclick="toggleProb(this)">
+      <div class="prob-header">
+        <div class="prob-icon pi-amber">🔒</div>
+        <div>
+          <div class="prob-title">Limited Management & Visibility</div>
+          <div class="prob-subtitle">No RBAC, no spending limits, no ability for users to claim or control their own instruments</div>
+        </div>
+        <svg class="prob-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="prob-body">
+        <div class="prob-body-inner">
+          <p>Customers lack the ability to view and manage the specific permissions and usages of their stored instruments. <strong>Users are currently unable to claim instruments previously added by SMBs</strong> on their behalf. Business owners have no robust way to grant role-based access to payment instruments or set specific spending limits for employees. There is no concept of: <em>"Use my Chase Bank ending in XXX124 for Payroll only."</em></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="prob-card" onclick="toggleProb(this)">
+      <div class="prob-header">
+        <div class="prob-icon pi-blue">🏦</div>
+        <div>
+          <div class="prob-title">Vault-Centric Design</div>
+          <div class="prob-subtitle">Cards, bank accounts, PayPal only — adding new instrument types requires re-architecture</div>
+        </div>
+        <svg class="prob-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="prob-body">
+        <div class="prob-body-inner">
+          <p>The current Wallet Service functions primarily as a <strong>static vault</strong> rather than an extensible platform. It was built for a fixed set of instrument types — cards, bank accounts, and PayPal — and the data model doesn't accommodate new types like balance accounts or cryptocurrency without significant re-architecture. Every new instrument type becomes a custom project rather than a configuration.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="prob-card" onclick="toggleProb(this)">
+      <div class="prob-header">
+        <div class="prob-icon pi-green">🔀</div>
+        <div>
+          <div class="prob-title">Inconsistent Experiences</div>
+          <div class="prob-subtitle">Redundant development across teams produces divergent UX — even for basics like nickname handling</div>
+        </div>
+        <svg class="prob-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="prob-body">
+        <div class="prob-body-inner">
+          <p>Without a true platform layer, teams build their own payment management logic independently. The result: <strong>redundant development efforts</strong> across multiple product teams that produce inconsistent customer experiences. Something as basic as how instrument nicknames are handled differs between surfaces. Wallet 2.0 consolidates these into platform-level capabilities so teams get consistency for free.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════ WHY — SCALE ════ -->
+<section class="section fade" id="why">
+  <div class="section-label">Why — The Scale</div>
+  <h2 class="section-title">We store <em>234 million</em><br/>payment instruments.</h2>
+  <p class="section-body">
+    Intuit's wallet infrastructure is one of the largest financial data stores in fintech — but most of it is fragmented, unverified, and unlinked. 
+    The scale of the problem is the reason Wallet 2.0 can't wait.
+  </p>
+
+  <div class="stat-strip">
+    <div class="stat-card c-green">
+      <div class="stat-value">234M</div>
+      <div class="stat-label">Total payment instruments stored today</div>
+      <div class="stat-sub">126M cards · 108M bank accounts</div>
+    </div>
+    <div class="stat-card c-amber">
+      <div class="stat-value">39%</div>
+      <div class="stat-label">Wallets linked to a <strong>verified</strong> Intuit profile</div>
+      <div class="stat-sub">Only 93M out of 234M have confirmed identity</div>
+    </div>
+    <div class="stat-card c-rose">
+      <div class="stat-value">61%</div>
+      <div class="stat-label">Wallets with <strong>unlinked</strong> identity</div>
+      <div class="stat-sub">141M created by businesses on behalf of customers — ownership is ambiguous</div>
+    </div>
+  </div>
+
+  <p class="section-body" style="margin-top:.5rem;">
+    That 61% gap isn't just a data quality problem. It's a <strong>fraud vector</strong>, a <strong>support burden</strong>, and a <strong>personalization blocker</strong>. When we can't reliably answer "who owns this wallet?" — we can't protect it, personalize it, or serve the person behind it.
+  </p>
+</section>
+
+<!-- ════ WHAT ════ -->
+<section class="section fade" id="what">
+  <div class="section-label">What — Wallet 2.0</div>
+  <h2 class="section-title">Wallets as <em>identity containers</em></h2>
+  <p class="section-body">
+    Not static card or bank vaults. Wallets in 2.0 hold <strong>instruments and permissions together</strong> — so that who can use what, for what purpose, and for how long is governed by design rather than assumed. Three capabilities make this real:
+  </p>
+
+  <div class="pillars">
+
+    <div class="pillar">
+      <div class="pillar-icon pi-blue">🔧</div>
+      <div class="pillar-title">Payment-Agnostic Instruments</div>
+      <div class="pillar-desc">Support for any instrument type — not just cards, bank accounts, and PayPal. Balance accounts, crypto, and future types are first-class citizens. New instruments are configuration, not custom builds.</div>
+    </div>
+
+    <div class="pillar">
+      <div class="pillar-icon pi-green">🛡️</div>
+      <div class="pillar-title">Granular Access Control</div>
+      <div class="pillar-desc">Generate credentials scoped to a specific merchant, amount, or payment type. Business owners can grant role-based access and set spending limits. Users can claim instruments added on their behalf.</div>
+    </div>
+
+    <div class="pillar">
+      <div class="pillar-icon pi-rose">🪪</div>
+      <div class="pillar-title">Linked Identity Layer</div>
+      <div class="pillar-desc">Instruments and verified identity travel together. Closes the 61% unlinked gap — so Intuit can consistently recognize, protect, and serve the same customer across all touchpoints and products.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════ WHERE ════ -->
+<section class="section fade" id="where">
+  <div class="section-label">Where — Launch Partners</div>
+  <h2 class="section-title">Starting with <em>three</em> partners</h2>
+  <p class="section-body">
+    Wallet 2.0 will roll out incrementally. These three use cases are our first proving grounds — chosen because they surface the platform's capabilities most directly.
+  </p>
+
+  <div class="partners">
+
+    <div class="partner">
+      <div class="partner-chip">Launch Partner 1</div>
+      <div class="partner-name">IES Shared Vendor</div>
+      <div class="partner-unlock">
+        <strong>The unlock:</strong> Sharing a single vendor payment method across multiple entities within an IES account — without creating duplicate instruments or requiring per-entity re-entry. Directly enabled by Wallet 2.0's cross-entity instrument model.
+      </div>
+    </div>
+
+    <div class="partner">
+      <div class="partner-chip">Launch Partner 2</div>
+      <div class="partner-name">Bill Pay Credit Card</div>
+      <div class="partner-unlock">
+        <strong>The unlock:</strong> Enabling credit card as a payment instrument within Bill Pay — a new instrument type that the current vault-centric Wallet 1.0 cannot cleanly accommodate. Validates the payment-agnostic instrument model.
+      </div>
+    </div>
+
+    <div class="partner">
+      <div class="partner-chip">Launch Partner 3</div>
+      <div class="partner-name">WFS Wallet</div>
+      <div class="partner-unlock">
+        <strong>The unlock:</strong> Migrating the WFS (Workforce Solutions) wallet onto the Wallet 2.0 platform — bringing identity linking, access control, and extensibility to the WFS money movement surface.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════ HOW — BEFORE / AFTER ════ -->
+<section class="section fade" id="how">
+  <div class="section-label">How — What Changes</div>
+  <h2 class="section-title">Wallet 1.0 vs. <em>Wallet 2.0</em></h2>
+  <p class="section-body">A plain-language comparison for PMs and stakeholders.</p>
+
+  <div style="overflow-x:auto; margin-bottom:2rem;">
+    <table class="ba-table">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th class="th-before">⚠️ Wallet 1.0 — Today</th>
+          <th class="th-after">✅ Wallet 2.0 — Future</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Instrument Types</td>
+          <td class="td-before"><span class="old">Cards, bank accounts, PayPal only</span><br/>New types require custom engineering work</td>
+          <td class="td-after"><span class="new">Payment-agnostic — any instrument type</span><br/>New types are config, not custom builds</td>
+        </tr>
+        <tr>
+          <td>Access Control</td>
+          <td class="td-before"><span class="old">None — all-or-nothing access</span><br/>No scoping by merchant, amount, or purpose</td>
+          <td class="td-after"><span class="new">Granular credential scoping</span><br/>Scope by merchant, amount, payment type, and duration</td>
+        </tr>
+        <tr>
+          <td>Identity</td>
+          <td class="td-before"><span class="old">61% of wallets are unlinked</span><br/>Who owns this wallet is often ambiguous</td>
+          <td class="td-after"><span class="new">Wallets are verified identity containers</span><br/>Instruments and identity travel together</td>
+        </tr>
+        <tr>
+          <td>Cross-Entity Sharing</td>
+          <td class="td-before"><span class="old">Not supported</span><br/>Instruments must be re-entered per entity</td>
+          <td class="td-after"><span class="new">Instruments can be shared across entities</span><br/>e.g., IES Shared Vendor payment method reuse</td>
+        </tr>
+        <tr>
+          <td>User Control</td>
+          <td class="td-before"><span class="old">No self-service instrument management</span><br/>Users can't claim instruments added by SMBs</td>
+          <td class="td-after"><span class="new">Full visibility & management</span><br/>Users can claim instruments, set permissions, view usage</td>
+        </tr>
+        <tr>
+          <td>Employee Spending Limits</td>
+          <td class="td-before"><span class="old">Not supported</span><br/>No role-based access or spending controls</td>
+          <td class="td-after"><span class="new">RBAC + spending limits</span><br/>Business owners can delegate and constrain access</td>
+        </tr>
+        <tr>
+          <td>Developer Experience</td>
+          <td class="td-before"><span class="old">Redundant builds per team</span><br/>Inconsistent UX — even basics like nicknames differ</td>
+          <td class="td-after"><span class="new">Platform-level capabilities, once</span><br/>Teams get consistency out of the box</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ════ FAQ ════ -->
+<section class="section fade" id="faq">
+  <div class="section-label">FAQ</div>
+  <h2 class="section-title">Common questions</h2>
+  <p class="section-body" style="margin-bottom:1.5rem;">Answers to what PMs and engineering leads typically ask.</p>
+
+  <div class="faq">
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        What does this mean for my team's roadmap?
+        <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner"><p>If your team is building payment flows today, Wallet 2.0 will give you a <strong>permission model, identity linking, and instrument extensibility out of the box</strong> — without having to build your own access logic. Migration will be phased; IES Shared Vendor, Bill Pay CC, and WFS Wallet are first. Your team will get migration guidance and support before any action is required.</p></div></div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        Do my current integrations break?
+        <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner"><p>No breaking changes without prior coordination and migration support. Wallet 2.0 is being built to be adopted incrementally. The launch phase focuses on net-new capabilities (shared vendor instruments, new instrument types, RBAC) rather than ripping out existing integrations. <strong>Existing Wallet 1.0 integrations will continue to function</strong> while migration paths are established.</p></div></div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        When does my team need to act?
+        <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner"><p>Right now: <strong>stay informed and flag use cases</strong> where Wallet 2.0 capabilities (access control, new instrument types, cross-entity sharing) would unblock your team. The Wallet Platform team wants to hear about your needs now so they can prioritize migration sequencing. Reach out to the contacts below to get on the radar.</p></div></div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        Who owns Wallet 2.0 and who do I contact?
+        <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner"><p>The <strong>Wallet Platform team</strong> owns the initiative. See the Contacts section below for the right people by area. For general questions, start with the PM or Engineering Manager listed there.</p></div></div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        Why these three launch partners first?
+        <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner"><p>IES Shared Vendor, Bill Pay CC, and WFS Wallet were selected because they each exercise a <strong>distinct capability pillar</strong> of Wallet 2.0 — cross-entity instrument sharing, new instrument type support, and identity + access control respectively. Proving all three in parallel de-risks the platform before broader adoption.</p></div></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════ RESOURCES ════ -->
+<section class="section fade" id="resources">
+  <div class="section-label">Resources</div>
+  <h2 class="section-title">Further reading</h2>
+  <div style="display:flex; flex-wrap:wrap; gap:.8rem; margin-top:.5rem;">
+    <a href="https://docs.google.com/document/d/1KNSYt8Z0Xel4RqS5NYrePo8r06cKPxA5IZ1Gm5h2tHY/edit?tab=t.0#heading=h.t4pqt8uzwu97" target="_blank" style="display:flex;align-items:center;gap:10px;background:white;border:1px solid var(--w200);border-radius:var(--r);padding:1rem 1.3rem;text-decoration:none;transition:all .2s;min-width:260px;" onmouseover="this.style.borderColor='var(--w300)';this.style.boxShadow='0 2px 12px rgba(42,35,29,.06)'" onmouseout="this.style.borderColor='var(--w200)';this.style.boxShadow='none'">
+      <div style="width:36px;height:36px;border-radius:8px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem;">📄</div>
+      <div>
+        <div style="font-weight:600;font-size:.88rem;color:var(--w900);">Technical Design Doc</div>
+        <div style="font-size:.75rem;color:var(--w400);">Wallet 2.0 · Architecture & Design</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ════ CONTACTS ════ -->
+<section class="section fade" id="contacts">
+  <div class="section-label">Contacts</div>
+  <h2 class="section-title">Who to reach</h2>
+  <p class="section-body" style="margin-bottom:1.4rem;">For questions about Wallet 2.0, migration timing, or partnership interest.</p>
+
+  <div class="contacts">
+    <div class="contact">
+      <div class="c-av g">PM</div>
+      <div>
+        <div class="c-name">Product Manager</div>
+        <div class="c-role">Wallet Platform</div>
+        <a class="c-link" href="#">@slack-handle</a>
+      </div>
+    </div>
+    <div class="contact">
+      <div class="c-av a">EM</div>
+      <div>
+        <div class="c-name">Engineering Manager</div>
+        <div class="c-role">Wallet Platform</div>
+        <a class="c-link" href="#">@slack-handle</a>
+      </div>
+    </div>
+    <div class="contact">
+      <div class="c-av b">TL</div>
+      <div>
+        <div class="c-name">Tech Lead</div>
+        <div class="c-role">Wallet Architecture</div>
+        <a class="c-link" href="#">@slack-handle</a>
+      </div>
+    </div>
+    <div class="contact">
+      <div class="c-av t">DS</div>
+      <div>
+        <div class="c-name">Design Lead</div>
+        <div class="c-role">Wallet UX</div>
+        <a class="c-link" href="#">@slack-handle</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  Wallet 2.0 · Wallet Platform Team · Intuit Internal · Last updated May 2026
+</footer>
+
+<!-- ════ JS ════ -->
+<script>
+  function toggleProb(el) {
+    const body = el.querySelector('.prob-body');
+    if (el.classList.contains('open')) {
+      body.style.maxHeight = '0px';
+      el.classList.remove('open');
+    } else {
+      el.classList.add('open');
+      body.style.maxHeight = body.scrollHeight + 'px';
+    }
+  }
+
+  function toggleFaq(el) {
+    const body = el.querySelector('.faq-a');
+    if (el.classList.contains('open')) {
+      body.style.maxHeight = '0px';
+      el.classList.remove('open');
+    } else {
+      el.classList.add('open');
+      body.style.maxHeight = body.scrollHeight + 'px';
+    }
+  }
+
+  // Scroll-triggered fade-in
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.animationPlayState = 'running';
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.fade').forEach(el => {
+    el.style.animationPlayState = 'paused';
+    io.observe(el);
+  });
+
+  // Smooth nav active state
+  const sections = document.querySelectorAll('section[id], header');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) cur = s.id; });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+    });
+  });
+</script>
+</body>
+</html>
