@@ -258,6 +258,109 @@
     .partner-unlock { font-size: .82rem; color: var(--w500); line-height: 1.6; }
     .partner-unlock strong { color: var(--w700); }
 
+    /* ─── DATA FLOW DIAGRAM ─── */
+    .flow-panel {
+      background: white; border: 1px solid var(--w200);
+      border-radius: var(--r); overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    .flow-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: .75rem;
+      padding: .85rem 1.1rem;
+      background: var(--w100); border-bottom: 1px solid var(--w200);
+    }
+    .flow-tabs { display: flex; gap: 4px; }
+    .flow-tab {
+      font-family: var(--sans); font-size: .78rem; font-weight: 600;
+      padding: 7px 14px; border-radius: 8px; border: 1.5px solid transparent;
+      background: transparent; color: var(--w500); cursor: pointer;
+      transition: all .18s;
+    }
+    .flow-tab:hover { color: var(--w800); background: white; }
+    .flow-tab.active {
+      background: white; color: var(--w900);
+      border-color: var(--w300); box-shadow: 0 1px 4px rgba(42,35,29,.06);
+    }
+    .flow-tab[data-mode="v2"].active { color: var(--green); border-color: var(--green-mid); }
+    .flow-actions { display: flex; align-items: center; gap: .5rem; }
+    .flow-play {
+      font-family: var(--sans); font-size: .76rem; font-weight: 600;
+      padding: 7px 14px; border-radius: 8px; border: none;
+      background: var(--w900); color: #fff; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: all .18s;
+    }
+    .flow-play:hover { background: var(--w800); }
+    .flow-play:disabled { opacity: .45; cursor: not-allowed; }
+    .flow-hint {
+      font-size: .72rem; color: var(--w400); max-width: 220px; line-height: 1.4;
+    }
+    .flow-canvas-wrap {
+      padding: 1rem .5rem .5rem;
+      overflow-x: auto;
+    }
+    .flow-svg {
+      display: block; width: 100%; min-width: 720px;
+      height: auto; user-select: none;
+    }
+    .flow-node { cursor: pointer; transition: filter .2s; }
+    .flow-node:hover { filter: brightness(1.03); }
+    .flow-node.dim { opacity: .28; }
+    .flow-node.active { filter: drop-shadow(0 0 8px rgba(45,138,94,.35)); }
+    .flow-path {
+      fill: none; stroke: var(--blue); stroke-width: 2.5;
+      stroke-linecap: round; opacity: .22;
+      transition: opacity .25s, stroke-width .25s;
+    }
+    .flow-path.highlight { opacity: 1; stroke-width: 3; }
+    .flow-path.dim { opacity: .06; }
+    .flow-pulse {
+      fill: var(--blue); opacity: 0;
+      pointer-events: none;
+    }
+    .flow-pulse.run { animation: flowPulse 1.1s ease-in-out forwards; }
+    @keyframes flowPulse {
+      0%   { opacity: 0; }
+      15%  { opacity: 1; }
+      85%  { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    .flow-label {
+      font-family: var(--sans); font-size: 11px; font-weight: 700;
+      fill: var(--blue); text-transform: lowercase;
+      pointer-events: none;
+    }
+    .flow-label.dim { opacity: .15; }
+    .flow-label.highlight { opacity: 1; }
+    .flow-entities {
+      display: flex; flex-wrap: wrap; gap: .45rem;
+      padding: .75rem 1.1rem 1.1rem;
+      border-top: 1px solid var(--w200);
+      background: var(--w50);
+    }
+    .flow-chip {
+      font-family: var(--sans); font-size: .74rem; font-weight: 600;
+      padding: 6px 12px; border-radius: 20px;
+      border: 1.5px solid var(--w200); background: white;
+      color: var(--w600); cursor: pointer;
+      transition: all .18s;
+    }
+    .flow-chip:hover { border-color: var(--w400); color: var(--w900); }
+    .flow-chip.active {
+      border-color: var(--green); background: var(--green-light); color: var(--green);
+    }
+    .flow-chip.dim { opacity: .35; }
+    .flow-detail {
+      margin: 0 1.1rem 1.1rem;
+      padding: .85rem 1rem;
+      background: var(--blue-light); border-radius: 10px;
+      border-left: 3px solid var(--blue);
+      font-size: .82rem; color: var(--w700); line-height: 1.55;
+      min-height: 3.2rem;
+    }
+    .flow-detail strong { color: var(--w900); }
+
     /* ─── BEFORE / AFTER ─── */
     .ba-table {
       width: 100%; border-collapse: separate; border-spacing: 0;
@@ -369,6 +472,7 @@
     <ul class="nav-links">
       <li><a href="#why">Why</a></li>
       <li><a href="#what">What</a></li>
+      <li><a href="#flow">Data Flow</a></li>
       <li><a href="#where">Where</a></li>
       <li><a href="#how">Before & After</a></li>
       <li><a href="#faq">FAQ</a></li>
@@ -500,6 +604,235 @@
       <div class="pillar-desc">Instruments and verified identity travel together. Closes the 61% unlinked gap — so Intuit can consistently recognize, protect, and serve the same customer across all touchpoints and products.</div>
     </div>
 
+  </div>
+</section>
+
+<!-- ════ DATA FLOW ════ -->
+<section class="section fade" id="flow">
+  <div class="section-label">How — Data Movement</div>
+  <h2 class="section-title">From direct access to <em>scoped tokens</em></h2>
+  <p class="section-body">
+    Toggle between architectures, click an entity, or press play to trace how instrument data moves.
+    In Wallet 2.0, <strong>User Intent</strong> mints purpose-bound usage tokens — consumers never touch the raw wallet item.
+  </p>
+
+  <div class="flow-panel">
+    <div class="flow-toolbar">
+      <div class="flow-tabs">
+        <button type="button" class="flow-tab active" data-mode="current">Current State</button>
+        <button type="button" class="flow-tab" data-mode="v2">Wallet 2.0</button>
+      </div>
+      <div class="flow-actions">
+        <span class="flow-hint">Click an entity below or play all flows</span>
+        <button type="button" class="flow-play" id="flowPlayBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Play flow
+        </button>
+      </div>
+    </div>
+
+    <div class="flow-canvas-wrap">
+      <svg class="flow-svg" id="flowSvg" viewBox="0 0 900 520" aria-label="Wallet data movement diagram">
+        <defs>
+          <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#4a6fa5"/>
+          </marker>
+          <filter id="nodeShadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.08"/>
+          </filter>
+        </defs>
+
+        <!-- CURRENT STATE -->
+        <g id="flowCurrent" class="flow-mode">
+          <!-- zone labels -->
+          <text x="450" y="28" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="700" fill="#9a8b78" letter-spacing="0.06em">MERCHANT CLONES</text>
+          <line x1="30" y1="188" x2="870" y2="188" stroke="#ebe6dc" stroke-width="1"/>
+          <text x="450" y="212" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="700" fill="#9a8b78" letter-spacing="0.06em">DIRECT WALLET ACCESS</text>
+
+          <!-- merchant clone paths -->
+          <path id="p-c-clone1"    class="flow-path" data-flow="merchant1" marker-end="url(#arrowBlue)" d="M87,228 C87,120 220,72 340,72"/>
+          <path id="p-c-m1-access" class="flow-path" data-flow="merchant1" marker-end="url(#arrowBlue)" d="M680,72 L415,72"/>
+          <path id="p-c-clone2"    class="flow-path" data-flow="merchant2" marker-end="url(#arrowBlue)" d="M87,252 C87,190 220,142 340,142"/>
+          <path id="p-c-m2-access" class="flow-path" data-flow="merchant2" marker-end="url(#arrowBlue)" d="M680,142 L415,142"/>
+
+          <!-- service access paths -->
+          <path id="p-c-payments" class="flow-path" data-flow="payments" marker-end="url(#arrowBlue)" d="M500,268 C380,268 260,268 145,268"/>
+          <path id="p-c-monetize" class="flow-path" data-flow="monetize" marker-end="url(#arrowBlue)" d="M500,338 C380,338 260,338 145,268"/>
+          <path id="p-c-payroll"  class="flow-path" data-flow="payroll"  marker-end="url(#arrowBlue)" d="M500,408 C380,408 260,408 145,268"/>
+
+          <text class="flow-label" data-flow="merchant1" x="230" y="62">clone</text>
+          <text class="flow-label" data-flow="merchant1" x="540" y="62">access</text>
+          <text class="flow-label" data-flow="merchant2" x="230" y="132">clone</text>
+          <text class="flow-label" data-flow="merchant2" x="540" y="132">access</text>
+          <text class="flow-label" data-flow="payments" x="300" y="258">access</text>
+          <text class="flow-label" data-flow="monetize" x="300" y="328">access</text>
+          <text class="flow-label" data-flow="payroll" x="300" y="398">access</text>
+
+          <!-- wallet hub -->
+          <g class="flow-node" data-flow="wallet" filter="url(#nodeShadow)">
+            <rect x="30" y="228" width="115" height="95" rx="10" fill="#fff" stroke="#d9d0c1" stroke-width="1.5"/>
+            <text x="87" y="265" text-anchor="middle" font-size="24">💳</text>
+            <text x="87" y="305" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="700" fill="#3d352d">Wallet ID = 1</text>
+          </g>
+
+          <!-- clones (top zone) -->
+          <g class="flow-node" data-flow="merchant1" filter="url(#nodeShadow)">
+            <rect x="340" y="46" width="75" height="52" rx="10" fill="#fff" stroke="#d9d0c1" stroke-width="1.5"/>
+            <text x="377" y="80" text-anchor="middle" font-size="20">💳</text>
+          </g>
+          <g class="flow-node" data-flow="merchant2" filter="url(#nodeShadow)">
+            <rect x="340" y="116" width="75" height="52" rx="10" fill="#fff" stroke="#d9d0c1" stroke-width="1.5"/>
+            <text x="377" y="150" text-anchor="middle" font-size="20">💳</text>
+          </g>
+
+          <!-- merchants (top zone) -->
+          <g class="flow-node" data-flow="merchant1" filter="url(#nodeShadow)">
+            <rect x="680" y="46" width="115" height="52" rx="10" fill="#fff" stroke="#d9d0c1" stroke-width="1.5"/>
+            <text x="737" y="70" text-anchor="middle" font-size="16">🏪</text>
+            <text x="737" y="88" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="600" fill="#5c5044">Merchant 1</text>
+          </g>
+          <g class="flow-node" data-flow="merchant2" filter="url(#nodeShadow)">
+            <rect x="680" y="116" width="115" height="52" rx="10" fill="#fff" stroke="#d9d0c1" stroke-width="1.5"/>
+            <text x="737" y="140" text-anchor="middle" font-size="16">🏪</text>
+            <text x="737" y="158" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="600" fill="#5c5044">Merchant 2</text>
+          </g>
+
+          <!-- services (bottom zone) -->
+          <g class="flow-node" data-flow="payments" filter="url(#nodeShadow)">
+            <rect x="500" y="245" width="155" height="46" rx="10" fill="#edf2f9" stroke="#4a6fa5" stroke-width="1.5"/>
+            <text x="577" y="274" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="600" fill="#3d352d">💰 Payments</text>
+          </g>
+          <g class="flow-node" data-flow="monetize" filter="url(#nodeShadow)">
+            <rect x="500" y="315" width="155" height="46" rx="10" fill="#edf2f9" stroke="#4a6fa5" stroke-width="1.5"/>
+            <text x="577" y="344" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="600" fill="#3d352d">📈 Monetization</text>
+          </g>
+          <g class="flow-node" data-flow="payroll" filter="url(#nodeShadow)">
+            <rect x="500" y="385" width="155" height="46" rx="10" fill="#edf2f9" stroke="#4a6fa5" stroke-width="1.5"/>
+            <text x="577" y="414" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="600" fill="#3d352d">👤 Payroll</text>
+          </g>
+
+          <circle class="flow-pulse" r="5" data-path="p-c-payments"/>
+          <circle class="flow-pulse" r="5" data-path="p-c-monetize"/>
+          <circle class="flow-pulse" r="5" data-path="p-c-payroll"/>
+          <circle class="flow-pulse" r="5" data-path="p-c-clone1"/>
+          <circle class="flow-pulse" r="5" data-path="p-c-clone2"/>
+          <circle class="flow-pulse" r="5" data-path="p-c-m1-access"/>
+          <circle class="flow-pulse" r="5" data-path="p-c-m2-access"/>
+        </g>
+
+        <!-- WALLET 2.0 -->
+        <g id="flowV2" class="flow-mode" style="display:none">
+          <rect x="12" y="12" width="876" height="496" rx="14" fill="none" stroke="#b8deca" stroke-width="2" stroke-dasharray="6 4"/>
+
+          <!-- mint paths (source → tokens) -->
+          <path id="p-v-t1" class="flow-path" data-flow="merchant1" marker-end="url(#arrowBlue)" d="M200,248 C270,80 330,62 400,62"/>
+          <path id="p-v-t2" class="flow-path" data-flow="merchant2" marker-end="url(#arrowBlue)" d="M200,248 C270,122 330,122 400,122"/>
+          <path id="p-v-t3" class="flow-path" data-flow="payments"   marker-end="url(#arrowBlue)" d="M200,248 C270,182 330,182 400,182"/>
+          <path id="p-v-t4" class="flow-path" data-flow="monetize"   marker-end="url(#arrowBlue)" d="M200,248 C270,242 330,242 400,242"/>
+          <path id="p-v-t5" class="flow-path" data-flow="payroll"    marker-end="url(#arrowBlue)" d="M200,248 C270,302 330,302 400,302"/>
+          <!-- access paths (tokens → consumers) -->
+          <path id="p-v-a1" class="flow-path" data-flow="merchant1" marker-end="url(#arrowBlue)" d="M450,62 C540,62 610,62 680,62"/>
+          <path id="p-v-a2" class="flow-path" data-flow="merchant2" marker-end="url(#arrowBlue)" d="M450,122 C540,122 610,122 680,122"/>
+          <path id="p-v-a3" class="flow-path" data-flow="payments"   marker-end="url(#arrowBlue)" d="M450,182 C540,182 610,182 680,182"/>
+          <path id="p-v-a4" class="flow-path" data-flow="monetize"   marker-end="url(#arrowBlue)" d="M450,242 C540,242 610,242 680,242"/>
+          <path id="p-v-a5" class="flow-path" data-flow="payroll"    marker-end="url(#arrowBlue)" d="M450,302 C540,302 610,302 680,302"/>
+
+          <text class="flow-label" data-flow="merchant1" x="280" y="52">mint</text>
+          <text class="flow-label" data-flow="merchant1" x="560" y="52">access</text>
+          <text class="flow-label" data-flow="merchant2" x="280" y="112">mint</text>
+          <text class="flow-label" data-flow="merchant2" x="560" y="112">access</text>
+          <text class="flow-label" data-flow="payments" x="280" y="172">mint</text>
+          <text class="flow-label" data-flow="payments" x="560" y="172">access</text>
+          <text class="flow-label" data-flow="monetize" x="280" y="232">mint</text>
+          <text class="flow-label" data-flow="monetize" x="560" y="232">access</text>
+          <text class="flow-label" data-flow="payroll" x="280" y="292">mint</text>
+          <text class="flow-label" data-flow="payroll" x="560" y="292">access</text>
+
+          <!-- source: wallet item + intent -->
+          <g class="flow-node" data-flow="wallet" filter="url(#nodeShadow)">
+            <rect x="40" y="188" width="90" height="72" rx="10" fill="#fff" stroke="#d9d0c1" stroke-width="1.5"/>
+            <text x="85" y="222" text-anchor="middle" font-size="22">💳</text>
+            <text x="85" y="246" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="700" fill="#3d352d">WalletItemID</text>
+          </g>
+          <text x="148" y="218" font-family="DM Sans,sans-serif" font-size="18" font-weight="600" fill="#9a8b78">+</text>
+          <g class="flow-node" data-flow="intent" filter="url(#nodeShadow)">
+            <rect x="168" y="268" width="96" height="56" rx="10" fill="#e8f5ee" stroke="#2d8a5e" stroke-width="1.5"/>
+            <text x="216" y="294" text-anchor="middle" font-size="16">✅</text>
+            <text x="216" y="314" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="700" fill="#2d8a5e">User Intent</text>
+          </g>
+
+          <!-- usage tokens -->
+          <g class="flow-node" data-flow="merchant1" filter="url(#nodeShadow)">
+            <polygon points="425,62 455,82 425,102 395,82" fill="#edf2f9" stroke="#4a6fa5" stroke-width="1.5"/>
+            <text x="425" y="78" text-anchor="middle" font-size="12">🛒</text>
+            <text x="425" y="122" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="600" fill="#5c5044">Token 1</text>
+          </g>
+          <g class="flow-node" data-flow="merchant2" filter="url(#nodeShadow)">
+            <polygon points="425,122 455,142 425,162 395,142" fill="#edf2f9" stroke="#4a6fa5" stroke-width="1.5"/>
+            <text x="425" y="138" text-anchor="middle" font-size="12">🛒</text>
+            <text x="425" y="182" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="600" fill="#5c5044">Token 2</text>
+          </g>
+          <g class="flow-node" data-flow="payments" filter="url(#nodeShadow)">
+            <polygon points="425,182 455,202 425,222 395,202" fill="#edf2f9" stroke="#4a6fa5" stroke-width="1.5"/>
+            <text x="425" y="198" text-anchor="middle" font-size="12">💰</text>
+            <text x="425" y="242" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="600" fill="#5c5044">Token 3</text>
+          </g>
+          <g class="flow-node" data-flow="monetize" filter="url(#nodeShadow)">
+            <polygon points="425,242 455,262 425,282 395,262" fill="#edf2f9" stroke="#4a6fa5" stroke-width="1.5"/>
+            <text x="425" y="258" text-anchor="middle" font-size="12">📈</text>
+            <text x="425" y="302" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="600" fill="#5c5044">Token 4</text>
+          </g>
+          <g class="flow-node" data-flow="payroll" filter="url(#nodeShadow)">
+            <polygon points="425,302 455,322 425,342 395,322" fill="#edf2f9" stroke="#4a6fa5" stroke-width="1.5"/>
+            <text x="425" y="318" text-anchor="middle" font-size="12">👤</text>
+            <text x="425" y="362" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="600" fill="#5c5044">Token 5</text>
+          </g>
+
+          <!-- consumers -->
+          <g class="flow-node" data-flow="merchant1" filter="url(#nodeShadow)">
+            <rect x="680" y="32" width="120" height="60" rx="10" fill="#fff" stroke="#d9d0c1" stroke-width="1.5"/>
+            <text x="740" y="60" text-anchor="middle" font-size="18">🏪</text>
+            <text x="740" y="80" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="600" fill="#5c5044">Merchant 1</text>
+          </g>
+          <g class="flow-node" data-flow="merchant2" filter="url(#nodeShadow)">
+            <rect x="680" y="92" width="120" height="60" rx="10" fill="#fff" stroke="#d9d0c1" stroke-width="1.5"/>
+            <text x="740" y="120" text-anchor="middle" font-size="18">🏪</text>
+            <text x="740" y="140" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="600" fill="#5c5044">Merchant 2</text>
+          </g>
+          <g class="flow-node" data-flow="payments" filter="url(#nodeShadow)">
+            <rect x="680" y="152" width="120" height="60" rx="10" fill="#edf2f9" stroke="#4a6fa5" stroke-width="1.5"/>
+            <text x="740" y="180" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" fill="#3d352d">💰 Payments</text>
+          </g>
+          <g class="flow-node" data-flow="monetize" filter="url(#nodeShadow)">
+            <rect x="680" y="212" width="120" height="60" rx="10" fill="#edf2f9" stroke="#4a6fa5" stroke-width="1.5"/>
+            <text x="740" y="240" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" fill="#3d352d">📈 Monetization</text>
+          </g>
+          <g class="flow-node" data-flow="payroll" filter="url(#nodeShadow)">
+            <rect x="680" y="272" width="120" height="60" rx="10" fill="#edf2f9" stroke="#4a6fa5" stroke-width="1.5"/>
+            <text x="740" y="300" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" fill="#3d352d">👤 Payroll</text>
+          </g>
+
+          <circle class="flow-pulse" r="5" data-path="p-v-t1"/><circle class="flow-pulse" r="5" data-path="p-v-t2"/>
+          <circle class="flow-pulse" r="5" data-path="p-v-t3"/><circle class="flow-pulse" r="5" data-path="p-v-t4"/>
+          <circle class="flow-pulse" r="5" data-path="p-v-t5"/>
+          <circle class="flow-pulse" r="5" data-path="p-v-a1"/><circle class="flow-pulse" r="5" data-path="p-v-a2"/>
+          <circle class="flow-pulse" r="5" data-path="p-v-a3"/><circle class="flow-pulse" r="5" data-path="p-v-a4"/>
+          <circle class="flow-pulse" r="5" data-path="p-v-a5"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="flow-detail" id="flowDetail">
+      Select an entity to see how data moves in the <strong>Current State</strong> — services hit the wallet directly; merchants receive full clones.
+    </div>
+
+    <div class="flow-entities" id="flowChips">
+      <button type="button" class="flow-chip" data-flow="merchant1">Merchant 1</button>
+      <button type="button" class="flow-chip" data-flow="merchant2">Merchant 2</button>
+      <button type="button" class="flow-chip" data-flow="payments">Payments</button>
+      <button type="button" class="flow-chip" data-flow="monetize">Monetization</button>
+      <button type="button" class="flow-chip" data-flow="payroll">Payroll</button>
+    </div>
   </div>
 </section>
 
@@ -787,6 +1120,181 @@
     sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) cur = s.id; });
     navLinks.forEach(a => {
       a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+    });
+  });
+
+  // ─── DATA FLOW DIAGRAM ───
+  const FLOW_COPY = {
+    current: {
+      default: 'Select an entity to see how data moves in the <strong>Current State</strong> — services hit the wallet directly; merchants receive full clones.',
+      merchant1: '<strong>Merchant 1:</strong> Wallet ID = 1 is <em>cloned</em> into a duplicate instrument. Merchant 1 accesses the clone — not a scoped credential. Changes to the source wallet may not propagate.',
+      merchant2: '<strong>Merchant 2:</strong> Same clone pattern as Merchant 1 — a separate full copy of the instrument, with no purpose or amount scoping.',
+      payments: '<strong>Payments:</strong> Direct <em>access</em> to Wallet ID = 1. The service reads the raw wallet — no intermediate token or permission boundary.',
+      monetize: '<strong>Monetization Services:</strong> Direct <em>access</em> to Wallet ID = 1. Same all-or-nothing access as other internal services.',
+      payroll: '<strong>Payroll:</strong> Direct <em>access</em> to Wallet ID = 1. No way to restrict this service to payroll-only usage of the instrument.'
+    },
+    v2: {
+      default: 'Select an entity to trace Wallet 2.0 — <strong>User Intent</strong> mints a scoped usage token; consumers access the token, never the raw WalletItemID.',
+      merchant1: '<strong>Merchant 1 → Usage Token 1:</strong> User intent scopes a merchant-specific token. Merchant 1 accesses Token 1 only — instrument data never leaves the wallet boundary unscoped.',
+      merchant2: '<strong>Merchant 2 → Usage Token 2:</strong> A separate intent mints Token 2. Each merchant gets an isolated, revocable credential.',
+      payments: '<strong>Payments → Usage Token 3:</strong> Payments receives a purpose-bound token — not direct wallet access. Scoped by what the user authorized.',
+      monetize: '<strong>Monetization → Usage Token 4:</strong> Monetization Services access Token 4 — a distinct credential from Payments or Payroll.',
+      payroll: '<strong>Payroll → Usage Token 5:</strong> Payroll accesses Token 5 only — e.g. "use this account for payroll" without exposing the instrument elsewhere.'
+    }
+  };
+
+  const FLOW_SEQUENCES = {
+    current: {
+      merchant1: ['p-c-clone1', 'p-c-m1-access'],
+      merchant2: ['p-c-clone2', 'p-c-m2-access'],
+      payments: ['p-c-payments'],
+      monetize: ['p-c-monetize'],
+      payroll: ['p-c-payroll']
+    },
+    v2: {
+      merchant1: ['p-v-t1', 'p-v-a1'],
+      merchant2: ['p-v-t2', 'p-v-a2'],
+      payments: ['p-v-t3', 'p-v-a3'],
+      monetize: ['p-v-t4', 'p-v-a4'],
+      payroll: ['p-v-t5', 'p-v-a5']
+    }
+  };
+
+  const PLAY_ORDER = ['merchant1', 'merchant2', 'payments', 'monetize', 'payroll'];
+
+  let flowMode = 'current';
+  let activeFlow = null;
+  let animating = false;
+
+  const flowCurrent = document.getElementById('flowCurrent');
+  const flowV2 = document.getElementById('flowV2');
+  const flowDetail = document.getElementById('flowDetail');
+  const flowPlayBtn = document.getElementById('flowPlayBtn');
+  const flowTabs = document.querySelectorAll('.flow-tab');
+  const flowChips = document.querySelectorAll('.flow-chip');
+
+  function activeGroup() {
+    return flowMode === 'current' ? flowCurrent : flowV2;
+  }
+
+  function setFlowMode(mode) {
+    flowMode = mode;
+    activeFlow = null;
+    flowCurrent.style.display = mode === 'current' ? '' : 'none';
+    flowV2.style.display = mode === 'v2' ? '' : 'none';
+    flowTabs.forEach(t => t.classList.toggle('active', t.dataset.mode === mode));
+    resetFlowVisuals();
+    flowDetail.innerHTML = FLOW_COPY[mode].default;
+  }
+
+  function resetFlowVisuals() {
+    const g = activeGroup();
+    g.querySelectorAll('.flow-path').forEach(p => p.classList.remove('highlight', 'dim'));
+    g.querySelectorAll('.flow-label').forEach(l => l.classList.remove('highlight', 'dim'));
+    g.querySelectorAll('.flow-node').forEach(n => n.classList.remove('active', 'dim'));
+    g.querySelectorAll('.flow-pulse').forEach(p => {
+      p.classList.remove('run');
+      p.style.offsetDistance = '0%';
+    });
+    flowChips.forEach(c => c.classList.remove('active', 'dim'));
+  }
+
+  function highlightFlow(key) {
+    if (animating) return;
+    activeFlow = key;
+    resetFlowVisuals();
+    const g = activeGroup();
+    const paths = FLOW_SEQUENCES[flowMode][key] || [];
+
+    g.querySelectorAll('.flow-path').forEach(p => {
+      const match = paths.includes(p.id) || p.dataset.flow === key;
+      p.classList.toggle('highlight', match);
+      p.classList.toggle('dim', !match);
+    });
+    g.querySelectorAll('.flow-label').forEach(l => {
+      const match = l.dataset.flow === key;
+      l.classList.toggle('highlight', match);
+      l.classList.toggle('dim', !match);
+    });
+    g.querySelectorAll('.flow-node').forEach(n => {
+      const f = n.dataset.flow;
+      const match = f === key
+        || (f === 'wallet')
+        || (flowMode === 'v2' && f === 'intent');
+      n.classList.toggle('active', match);
+      n.classList.toggle('dim', key && !match);
+    });
+    flowChips.forEach(c => {
+      c.classList.toggle('active', c.dataset.flow === key);
+      c.classList.toggle('dim', c.dataset.flow !== key);
+    });
+    flowDetail.innerHTML = FLOW_COPY[flowMode][key] || FLOW_COPY[flowMode].default;
+  }
+
+  function animatePulse(pathId, delay) {
+    return new Promise(resolve => {
+      const g = activeGroup();
+      const path = g.querySelector('#' + pathId);
+      const pulse = g.querySelector('.flow-pulse[data-path="' + pathId + '"]');
+      if (!path || !pulse) { resolve(); return; }
+
+      path.classList.add('highlight');
+      pulse.classList.add('run');
+
+      const len = path.getTotalLength();
+      const duration = 1100;
+      const start = performance.now() + delay;
+
+      function tick(now) {
+        if (now < start) { requestAnimationFrame(tick); return; }
+        const t = Math.min((now - start) / duration, 1);
+        const pt = path.getPointAtLength(t * len);
+        pulse.setAttribute('cx', pt.x);
+        pulse.setAttribute('cy', pt.y);
+        if (t < 1) requestAnimationFrame(tick);
+        else {
+          pulse.classList.remove('run');
+          resolve();
+        }
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  async function playAllFlows() {
+    if (animating) return;
+    animating = true;
+    flowPlayBtn.disabled = true;
+    resetFlowVisuals();
+
+    for (const key of PLAY_ORDER) {
+      highlightFlow(key);
+      const paths = FLOW_SEQUENCES[flowMode][key] || [];
+      for (const pathId of paths) {
+        await animatePulse(pathId, 0);
+        await new Promise(r => setTimeout(r, 120));
+      }
+      await new Promise(r => setTimeout(r, 350));
+    }
+
+    animating = false;
+    flowPlayBtn.disabled = false;
+  }
+
+  flowTabs.forEach(tab => {
+    tab.addEventListener('click', () => setFlowMode(tab.dataset.mode));
+  });
+
+  flowChips.forEach(chip => {
+    chip.addEventListener('click', () => highlightFlow(chip.dataset.flow));
+  });
+
+  flowPlayBtn.addEventListener('click', playAllFlows);
+
+  document.querySelectorAll('.flow-node[data-flow]').forEach(node => {
+    node.addEventListener('click', () => {
+      const f = node.dataset.flow;
+      if (f && f !== 'wallet' && f !== 'intent') highlightFlow(f);
     });
   });
 </script>
