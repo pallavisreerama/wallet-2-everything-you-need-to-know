@@ -252,8 +252,38 @@
       font-size: .65rem; font-weight: 700; text-transform: uppercase;
       letter-spacing: .06em; padding: 2px 8px; border-radius: 6px;
       background: var(--green-light); color: var(--green);
-      display: inline-block; margin-bottom: .7rem;
+      display: inline-block;
     }
+    .partner-top {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: .6rem; margin-bottom: .75rem; flex-wrap: wrap;
+    }
+    .partner-date {
+      display: inline-flex; flex-direction: column; align-items: flex-end;
+      gap: 1px; padding: .45rem .75rem; border-radius: 10px;
+      background: linear-gradient(135deg, var(--w50) 0%, var(--w100) 100%);
+      border: 1px solid var(--w200); min-width: 88px;
+    }
+    .partner-date-label {
+      font-size: .58rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .08em; color: var(--w400);
+    }
+    .partner-date-value {
+      font-family: var(--serif); font-size: 1.05rem; font-weight: 400;
+      color: var(--w900); letter-spacing: -.02em; line-height: 1.1;
+    }
+    .partner-date.confirmed {
+      background: linear-gradient(135deg, #f8fdf9 0%, var(--green-light) 100%);
+      border-color: var(--green-mid);
+    }
+    .partner-date.confirmed .partner-date-label { color: var(--green); }
+    .partner-date.confirmed .partner-date-value { color: #1f6b47; }
+    .partner-date.tentative {
+      background: linear-gradient(135deg, #fffcf7 0%, var(--amber-light) 100%);
+      border-color: #e8d5a0;
+    }
+    .partner-date.tentative .partner-date-label { color: var(--amber); }
+    .partner-date.tentative .partner-date-value { color: #8a6914; }
     .partner-name {
       font-weight: 700; font-size: .95rem; color: var(--w900);
       margin-bottom: .4rem; letter-spacing: -.01em;
@@ -883,7 +913,13 @@
   <div class="partners">
 
     <div class="partner">
-      <div class="partner-chip">Launch Partner 1</div>
+      <div class="partner-top">
+        <div class="partner-chip">Launch Partner 1</div>
+        <div class="partner-date confirmed">
+          <span class="partner-date-label">Target launch</span>
+          <span class="partner-date-value">Q1 FY27</span>
+        </div>
+      </div>
       <div class="partner-name">WFS Wallet</div>
       <div class="partner-unlock">
         <strong>The unlock:</strong> WFS Wallet will be completely built on 2.0 right from balance to debit card and money movement. This will be the first consumer use case on Wallet 2.0.
@@ -891,7 +927,13 @@
     </div>
 
     <div class="partner">
-      <div class="partner-chip">Launch Partner 2</div>
+      <div class="partner-top">
+        <div class="partner-chip">Launch Partner 2</div>
+        <div class="partner-date confirmed">
+          <span class="partner-date-label">Target launch</span>
+          <span class="partner-date-value">Q4 FY26</span>
+        </div>
+      </div>
       <div class="partner-name">Bill Pay Credit Card</div>
       <div class="partner-unlock">
         <strong>The unlock:</strong> PPF and MTS will use usage tokens in Wallet 2.0 to facilitate bill pay credit card.
@@ -899,7 +941,13 @@
     </div>
 
     <div class="partner">
-      <div class="partner-chip">Launch Partner 3</div>
+      <div class="partner-top">
+        <div class="partner-chip">Launch Partner 3</div>
+        <div class="partner-date tentative">
+          <span class="partner-date-label">Tentative</span>
+          <span class="partner-date-value">Q4 FY26</span>
+        </div>
+      </div>
       <div class="partner-name">IES Shared Vendor</div>
       <div class="partner-unlock">
         <strong>The unlock:</strong> Sharing a single vendor payment method across multiple entities within an IES account — without creating duplicate instruments or requiring per-entity re-entry. Directly enabled by Wallet 2.0's cross-entity instrument model.
