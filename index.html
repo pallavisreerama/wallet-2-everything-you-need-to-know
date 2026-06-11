@@ -256,7 +256,14 @@
     }
     .partner-name {
       font-weight: 700; font-size: .95rem; color: var(--w900);
-      margin-bottom: .4rem; letter-spacing: -.01em;
+      margin-bottom: .2rem; letter-spacing: -.01em;
+    }
+    .partner-when {
+      font-size: .78rem; color: var(--w500);
+      margin-bottom: .65rem; letter-spacing: -.01em;
+    }
+    .partner-when.tentative em {
+      font-style: normal; color: var(--amber); font-weight: 500;
     }
     .partner-unlock { font-size: .82rem; color: var(--w500); line-height: 1.6; }
     .partner-unlock strong { color: var(--w700); }
@@ -884,9 +891,10 @@
 
     <div class="partner">
       <div class="partner-chip">Launch Partner 1</div>
-      <div class="partner-name">WFS Wallet</div>
+      <div class="partner-name">Workforce Wallet</div>
+      <div class="partner-when">Target launch · Q1 FY27</div>
       <div class="partner-unlock">
-        <strong>The unlock:</strong> WFS Wallet will be completely built on 2.0 right from balance to debit card and money movement. This will be the first consumer use case on Wallet 2.0.
+        <strong>The unlock:</strong> Workforce Wallet is our first consumer use case, for 18 million payroll employees — starting with the 4 million who still receive paper checks today. For these employees, we're providing a secure, digital wallet built entirely on Wallet 2.0. This is Wallet 2.0 in production, at scale, for the SMB workforce.
       </div>
     </div>
 
@@ -894,15 +902,16 @@
       <div class="partner-chip">Launch Partner 2</div>
       <div class="partner-name">Bill Pay Credit Card</div>
       <div class="partner-unlock">
-        <strong>The unlock:</strong> PPF and MTS will use usage tokens in Wallet 2.0 to facilitate bill pay credit card.
+        <strong>The unlock:</strong> Bill Pay is our first business use case on Wallet 2.0, unlocking credit card as a funding source for QuickBooks Bill Pay. This gives 6M in new revenue while solving a real customer need — the flexibility to manage cash flow on their terms.
       </div>
     </div>
 
     <div class="partner">
       <div class="partner-chip">Launch Partner 3</div>
       <div class="partner-name">IES Shared Vendor</div>
+      <div class="partner-when tentative"><em>Tentative</em> · Q4 FY26</div>
       <div class="partner-unlock">
-        <strong>The unlock:</strong> Sharing a single vendor payment method across multiple entities within an IES account — without creating duplicate instruments or requiring per-entity re-entry. Directly enabled by Wallet 2.0's cross-entity instrument model.
+        <strong>The unlock:</strong> IES Shared Vendor is our mid-market bet — giving multi-entity businesses a single, consistent view of vendors and payment instruments across all their entities. Wallet 2.0 fixes this at the foundation — one instrument, one source of truth, shared across the entire organization.
       </div>
     </div>
 
@@ -977,7 +986,7 @@
         What does this mean for my team's roadmap?
         <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
-      <div class="faq-a"><div class="faq-a-inner"><p>If your team is building payment flows today, Wallet 2.0 will give you a <strong>permission model, identity linking, and instrument extensibility out of the box</strong> — without having to build your own access logic. Migration will be phased; WFS Wallet, Bill Pay CC, and IES Shared Vendor are first. Your team will get migration guidance and support before any action is required.</p></div></div>
+      <div class="faq-a"><div class="faq-a-inner"><p>If your team is building payment flows today, Wallet 2.0 will give you a <strong>permission model, identity linking, and instrument extensibility out of the box</strong> — without having to build your own access logic. Migration will be phased; Workforce Wallet, Bill Pay CC, and IES Shared Vendor are first. Your team will get migration guidance and support before any action is required.</p></div></div>
     </div>
 
     <div class="faq-item" onclick="toggleFaq(this)">
@@ -1009,7 +1018,7 @@
         Why these three launch partners first?
         <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
-      <div class="faq-a"><div class="faq-a-inner"><p>WFS Wallet, Bill Pay CC, and IES Shared Vendor were selected because they each exercise a <strong>distinct capability pillar</strong> of Wallet 2.0 — identity + access control, new instrument type support, and cross-entity instrument sharing respectively. Proving all three in parallel de-risks the platform before broader adoption.</p></div></div>
+      <div class="faq-a"><div class="faq-a-inner"><p>Workforce Wallet, Bill Pay CC, and IES Shared Vendor were selected because they each exercise a <strong>distinct capability pillar</strong> of Wallet 2.0 — identity + access control, new instrument type support, and cross-entity instrument sharing respectively. Proving all three in parallel de-risks the platform before broader adoption.</p></div></div>
     </div>
 
   </div>
