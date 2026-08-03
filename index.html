@@ -185,9 +185,8 @@
     .prob-card:hover { border-color: var(--w300); box-shadow: 0 2px 12px rgba(42,35,29,.04); }
 
     .prob-header {
-      padding: 1.2rem 1.4rem; cursor: pointer;
+      padding: 1.2rem 1.4rem 0;
       display: flex; align-items: center; gap: 1rem;
-      user-select: none;
     }
     .prob-icon {
       width: 38px; height: 38px; flex-shrink: 0;
@@ -204,21 +203,13 @@
       color: var(--w900); letter-spacing: -.01em;
     }
     .prob-subtitle { font-size: .8rem; color: var(--w500); margin-top: 1px; }
-    .prob-chevron {
-      width: 22px; height: 22px; flex-shrink: 0;
-      color: var(--w400); transition: transform .3s cubic-bezier(.34,1.56,.64,1);
-    }
-    .prob-card.open .prob-chevron { transform: rotate(180deg); color: var(--green); }
-
-    .prob-body { max-height: 0; overflow: hidden; opacity: 0; transition: max-height .4s ease, opacity .3s; }
-    .prob-card.open .prob-body { opacity: 1; }
+    .prob-body { opacity: 1; }
     .prob-body-inner {
       padding: 0 1.4rem 1.4rem 1.4rem;
-      border-top: 1px solid var(--w200);
-      margin: 0 0 0 0;
+      margin: 0;
     }
     .prob-body-inner p {
-      font-size: .88rem; color: var(--w600); line-height: 1.75; padding-top: 1rem;
+      font-size: .88rem; color: var(--w600); line-height: 1.75; padding-top: .75rem;
     }
     .prob-body-inner strong { color: var(--w800); }
 
@@ -516,18 +507,16 @@
 <section class="section fade d2" id="why">
   <div class="section-label">Why — The Problems</div>
   <h2 class="section-title">Four shortcomings<br/>driving <em>Wallet 2.0</em></h2>
-  <p class="section-body">Click each to expand.</p>
 
   <div class="problems">
 
-    <div class="prob-card" onclick="toggleProb(this)">
+    <div class="prob-card">
       <div class="prob-header">
         <div class="prob-icon pi-rose">🪪</div>
         <div>
           <div class="prob-title">Trust & Identity Fragmentation</div>
           <div class="prob-subtitle">61% of wallets are unlinked — we can't consistently recognize or protect the same customer</div>
         </div>
-        <svg class="prob-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="prob-body">
         <div class="prob-body-inner">
@@ -537,14 +526,13 @@
       </div>
     </div>
 
-    <div class="prob-card" onclick="toggleProb(this)">
+    <div class="prob-card">
       <div class="prob-header">
         <div class="prob-icon pi-amber">🔒</div>
         <div>
           <div class="prob-title">Limited Management & Visibility</div>
           <div class="prob-subtitle">No RBAC, no spending limits, no ability for users to claim or control their own instruments</div>
         </div>
-        <svg class="prob-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="prob-body">
         <div class="prob-body-inner">
@@ -553,14 +541,13 @@
       </div>
     </div>
 
-    <div class="prob-card" onclick="toggleProb(this)">
+    <div class="prob-card">
       <div class="prob-header">
         <div class="prob-icon pi-blue">🏦</div>
         <div>
           <div class="prob-title">Vault-Centric Design</div>
           <div class="prob-subtitle">Cards, bank accounts, PayPal only — adding new instrument types requires re-architecture</div>
         </div>
-        <svg class="prob-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="prob-body">
         <div class="prob-body-inner">
@@ -569,14 +556,13 @@
       </div>
     </div>
 
-    <div class="prob-card" onclick="toggleProb(this)">
+    <div class="prob-card">
       <div class="prob-header">
         <div class="prob-icon pi-green">🔀</div>
         <div>
           <div class="prob-title">Inconsistent Experiences</div>
           <div class="prob-subtitle">Redundant development across teams produces divergent UX — even for basics like nickname handling</div>
         </div>
-        <svg class="prob-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="prob-body">
         <div class="prob-body-inner">
@@ -1087,17 +1073,6 @@
 
 <!-- ════ JS ════ -->
 <script>
-  function toggleProb(el) {
-    const body = el.querySelector('.prob-body');
-    if (el.classList.contains('open')) {
-      body.style.maxHeight = '0px';
-      el.classList.remove('open');
-    } else {
-      el.classList.add('open');
-      body.style.maxHeight = body.scrollHeight + 'px';
-    }
-  }
-
   function toggleFaq(el) {
     const body = el.querySelector('.faq-a');
     if (el.classList.contains('open')) {
